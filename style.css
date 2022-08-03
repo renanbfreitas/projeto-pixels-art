@@ -8,7 +8,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-
+  background-image: url('bart5.jpg');
 }
 
 .fixed {
@@ -18,7 +18,7 @@ body {
 }
 
 #color-palette {
-  background-color: white;
+  color: white;
   margin: 0 auto;
   padding: 16px;
 }
