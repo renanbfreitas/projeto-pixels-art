@@ -8,9 +8,10 @@ const createColorSinglePalette = (color) => {
   return colorDiv;
 };
 
-const colorGeneratorRandom = () => {
-  return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-};
+const colorGeneratorRandom = () => `
+rgb(${Math.floor(Math.random() * 256)},
+${Math.floor(Math.random() * 256)},
+${Math.floor(Math.random() * 256)})`;
 
 const populateColorsPalette = (number) => {
   const firstColor = createColorSinglePalette('black');
@@ -45,17 +46,17 @@ const createCanvasBoard = (number) => {
   }
 };
 
+const getColorSelect = (event) => {
+  const color = window.getComputedStyle(event.target).getPropertyValue('background-color');
+  colorComputed = color;
+};
+
 let colorComputed = 'black';
 const selectColor = (event) => {
   const currentColorSelected = document.querySelector('.selected');
   currentColorSelected.classList.remove('selected');
   event.target.classList.add('selected');
   getColorSelect(event);
-};
-
-const getColorSelect = (event) => {
-  const color = window.getComputedStyle(event.target).getPropertyValue('background-color');
-  colorComputed = color;
 };
 
 const setColorChangePixel = (event) => {
@@ -70,6 +71,13 @@ const clearButtonPixelBoard = () => {
   }
 };
 
+const removeCurrentBoardCanvas = () => {
+  const pixels = document.querySelectorAll('pixel');
+  for (const pixel of pixels) {
+    pixel.remove();
+  }
+};
+
 const resizeCanvasBoard = () => {
   let inputResizeValue = Number(document.querySelector('#board-size').value);
   if (inputResizeValue >= 5 && inputResizeValue <= 50) {
@@ -80,24 +88,7 @@ const resizeCanvasBoard = () => {
     removeCurrentBoardCanvas();
     createCanvasBoard(inputResizeValue);
   } else {
-    alert("Board inválido!")
-  }
-};
-
-const removeCurrentBoardCanvas = () => {
-  const pixels = document.querySelectorAll('.pixel');
-  for (const pixel of pixels) {
-    pixel.remove();
-  }
-};
-
-const handleControllerEvents = (...types) => {
-  for (const type of types) {
-    switch (type) {
-      case 'click':
-        controllerEventsClicks(type);
-        break;
-    }
+    alert('Board inválido!');
   }
 };
 
@@ -105,20 +96,32 @@ const controllerEventsClicks = (type) => {
   document.addEventListener(type, (event) => {
     const dataSetEvent = event.target.dataset.event;
     switch (dataSetEvent) {
-      case 'selectColor':
-        selectColor(event);
-        break;
-      case 'changeColor':
-        setColorChangePixel(event);
-        break;
-      case 'clearButton':
-        clearButtonPixelBoard();
-        break;
-      case 'resizeCanvas':
-        resizeCanvasBoard();
-        break;
+    case 'selectColor':
+      selectColor(event);
+      break;
+    case 'changeColor':
+      setColorChangePixel(event);
+      break;
+    case 'clearButton':
+      clearButtonPixelBoard();
+      break;
+    case 'resizeCanvas':
+      resizeCanvasBoard();
+      break;
+    default:
     }
-  })
+  });
+};
+
+const handleControllerEvents = (...types) => {
+  for (const type of types) {
+    switch (type) {
+    case 'click':
+      controllerEventsClicks(type);
+      break;
+    default:
+    }
+  }
 };
 
 window.onload = () => {
